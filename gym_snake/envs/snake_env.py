@@ -18,7 +18,7 @@ class SnakeEnv(gym.Env):
         self.game = SnakeGameGym(fps, use_pygame=use_pygame)
 
         self.action_space = spaces.Discrete(4)
-        self.observation_space = spaces.Box(low=0, high=3, shape=(self.game.cols, self.game.rows), dtype=int)
+        self.observation_space = spaces.Box(low=0, high=4, shape=(self.game.cols, self.game.rows), dtype=int)
            
 
 
@@ -41,7 +41,7 @@ class SnakeEnv(gym.Env):
         rewards = self.game.check_collisions()
 
         # Game is over if wall collision or body collision occurred. TODO: add end done for time limit
-        done = self.game.check_wall_collision() or self.game.check_body_collision()
+        done = self.game.check_wall_collision() or self.game.check_body_collision() or self.game.check_bomb_collision()
         
         if self.game.use_pygame:
             self.game.clock.tick(self.game.fps)
