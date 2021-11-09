@@ -6,6 +6,7 @@
 
 import numpy as np
 from gym import spaces
+import collections
 from gym_snake.envs.snakeGame import SnakeGame
 from gym_snake.envs.snake import Snake
 import pygame
@@ -60,6 +61,27 @@ class SnakeGameGym(SnakeGame):
 
 		# Otherwise, pos is on board
 		return True
+
+	def get_ga_network_inputs(self):
+		head = self.snake.body[0]
+
+		#Get the manhattan ditance of the fruit from the head if it moves in each direction
+		dist_left_fruit = self.manhattan_distance(head[0],head[1]-1)
+		dist_up_fruit = self.manhattan_distance(head[0]-1,head[1])
+		dist_right_fruit = self.manhattan_distance(head[0],head[1]+1)
+		dist_down_fruit = self.manhattan_distance(head[0]+1, head[1])
+
+		#Calculate the space available for turning in each of the four directions, reduced by a constant factor
+		constant = 20
+		open_spaces_left = self.calc_open_spaces((head[0], head[1]-1))/constant
+		open_spaces_up = self.calc_open_spaces((head[0]-1, head[1]))/constant
+		open_spaces_right = self.calc_open_spaces((head[0], head[1]+1))/constant
+		open_spaces_down = self.calc_open_spaces((head[0]+1, head[1]))/constant
+
+		#Get the length of the snake
+		length = self.score + 1
+
+		return np.array([dist_left_fruit, dist_up_fruit, dist_right_fruit, dist_down_fruit,  open_spaces_left, open_spaces_up, open_spaces_down, open_spaces_right, length], dtype=np.float32)
 
 	def get_board(self) -> np.ndarray:
 		"""
@@ -123,6 +145,90 @@ class SnakeGameGym(SnakeGame):
 		self.score += 1
 
 		return self.score
+
+	def manhattan_distance(self, y_head, x_head):
+		"""Function to calculate the manhattan distance between the fruit and the snake's head
+
+		Arguments:
+			y_head: The row in the grid of the snake's head.
+			x_head: The column in the grid of the snake's head.
+
+		Returns:
+			The manhattan distance between the fruit and the snake's head.
+		"""
+		return abs(self.fruit_pos[0] - y_head) + abs(self.fruit_pos[1] - x_head)
+	
+	def calc_open_spaces(self,start_pos):
+		"""Function to calculate the number of open spaces around the snake 
+
+		An open space is a space that the snake can reach without being blocked off by
+		the wall or its own body.
+
+		Arguments:
+			start_poistion: A tuple in (row,column) format representing a position of the snake's head
+
+		Returns:
+			An integer of how many open spaces are available.
+		"""
+		open_spaces = 0
+
+		start_y = start_pos[1]
+		start_x = start_pos[0]
+
+		#If the start position is in the snake's body or out of bounds
+		if start_pos in self.snake.body or (start_x < 0 or start_x >= self.cols or start_y < 0 or start_y >= self.rows):
+				#no open spaces
+				return 0
+
+		#Breadth first search is used
+
+		#Create a set to represent th visited spaces
+		visited = set([start_pos])
+		#Create a queue to keep track of which spaces need to be expanded
+		queue = collections.deque([start_pos])
+
+		#While there are still unvisited open spaces to search from
+		while len(queue) > 0:
+
+			cur = queue.popleft()
+
+			possible_moves = self.get_possible_moves(cur)
+
+			for move in possible_moves:
+				if move not in visited:
+
+					visited.add(move)
+
+					#if the move is an open space
+					if move not in self.snake.body:
+						open_spaces +=1
+						#add the open space to the queue for further searching
+						queue.append(move)
+
+		return open_spaces
+
+	def get_possible_moves(self,cur):
+		"""Function to get all the possible adjacent moves from a position.
+
+		The function is called from calc_open_spaces() during the breadth first search.
+
+		Arguments:
+			cur: A tuple in (row,column) format representing the position
+			to get the next possible moves from.
+
+		Returns:
+			A list containing (row,column) tuples of all the possible adjacent moves.
+		"""
+
+		adjacent_spaces = [(cur[0], cur[1]-1), (cur[0]-1,cur[1]), (cur[0], cur[1]+1), (cur[0]+1, cur[1])]
+		possible_moves = []
+		for move in adjacent_spaces:
+			move_y = move[1]
+			move_x = move[0]
+			#If the move is not out of bounds
+			if move_x >= 0 and move_x < self.cols and move_y >= 0 and move_y < self.rows:
+					possible_moves.append(move)
+		return possible_moves
 
 	def check_collisions(self) -> int:
 		"""

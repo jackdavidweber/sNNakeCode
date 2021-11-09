@@ -18,8 +18,11 @@ class SnakeEnv(gym.Env):
         self.game = SnakeGameGym(fps, use_pygame=use_pygame)
 
         self.action_space = spaces.Discrete(4)
-        self.observation_space = spaces.Box(low=0, high=3, shape=(self.game.cols, self.game.rows), dtype=int)
-           
+
+        num_spaces = self.game.cols * self.game.rows
+        high = np.array([self.game.cols, self.game.rows, self.game.cols, self.game.rows, num_spaces, num_spaces, num_spaces, num_spaces, num_spaces], dtype=np.float32)
+        low = np.zeros(9, dtype=np.float32)
+        self.observation_space = spaces.Box(low, high, dtype=np.float32)
 
 
     def step(self, action: spaces.Discrete(4)) -> tuple:
@@ -35,7 +38,7 @@ class SnakeEnv(gym.Env):
         self.game.move_snake(action)
     
         # Get observation after move
-        observation = self.game.get_board()
+        observation = self.game.get_ga_network_inputs()
 
         # Get rewards
         rewards = self.game.check_collisions()
@@ -56,7 +59,7 @@ class SnakeEnv(gym.Env):
         Function that collects the game board observation, ends the game,
         and returns the observation.
         """
-        observation = self.game.get_board()
+        observation = self.game.get_ga_network_inputs()
         self.game.game_over()
 
         # game_over sets restart to  true. It then needs to be reset to false. 
@@ -74,7 +77,7 @@ class SnakeEnv(gym.Env):
         NOTE: As of now, this render function is NOT working. Evidently,
         SimpleImageViewer is not that simple
         """
-        observation = self.game.get_board()
+        observation = self.game.get_ga_network_inputs()
 
         #Non-graphical
         if mode == "array":
