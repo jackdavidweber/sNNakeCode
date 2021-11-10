@@ -42,8 +42,9 @@ class SnakeGameGym(SnakeGame):
 		self.snake = Snake(self.rows,self.cols)
 		self.fruit_pos = (0,0)
 		self.generate_fruit()
-		self.bomb_pos = (0,0)
-		self.generate_bomb()
+		self.num_bombs = 6
+		self.bombs = []
+		self.generate_bombs(self.num_bombs)
 		self.score = 0
 		self.high_score = 0	
 
@@ -82,10 +83,11 @@ class SnakeGameGym(SnakeGame):
 		fruit_col = self.fruit_pos[1]
 		board[fruit_row][fruit_col] = 1
 
-		# Add Bomb
-		bomb_row = self.bomb_pos[0]
-		bomb_col = self.bomb_pos[1]
-		board[bomb_row][bomb_col] = 4
+		# Add Bombs
+		for bomb in self.bombs:
+			bomb_row = bomb[0]
+			bomb_col = bomb[1]
+			board[bomb_row][bomb_col] = 4
 
 		# Add Snake to Board
 		for i in range(len(self.snake.body)):
@@ -119,20 +121,25 @@ class SnakeGameGym(SnakeGame):
 
 		self.snake.update_body_positions()
 
-	def generate_bomb(self):
+	def generate_bombs(self, num_bombs):
 		"""Function to generate a new random position for the bomb."""
 
-		bomb_row = random.randrange(0,self.rows)
-		bomb_col = random.randrange(0,self.cols)
+		bombs = []
 
-		#Continually generate a location for the fruit until it is not in the snake's body
-		while (bomb_row, bomb_col) in self.snake.body or (bomb_row, bomb_col) == self.fruit_pos:
+		for i in range(num_bombs):
 
 			bomb_row = random.randrange(0,self.rows)
 			bomb_col = random.randrange(0,self.cols)
 
+			#Continually generate a location for the fruit until it is not in the snake's body
+			while (bomb_row, bomb_col) in self.snake.body or (bomb_row, bomb_col) == self.fruit_pos:
 
-		self.bomb_pos = (bomb_row,bomb_col)
+				bomb_row = random.randrange(0,self.rows)
+				bomb_col = random.randrange(0,self.cols)
+			
+			bombs.append((bomb_row, bomb_col))
+
+		self.bombs = bombs
 
 	def respond_to_fruit_consumption(self) -> int:
 		"""
@@ -176,7 +183,11 @@ class SnakeGameGym(SnakeGame):
 		"""
 		Function that detects and handles if the snake has collided with a bomb.
 		"""
-		return self.snake.body[0] == self.bomb_pos
+		for bomb in self.bombs:
+			if(self.snake.body[0]==bomb):
+				return True
+
+		return False
 
 	def check_wall_collision(self) -> bool:
 		"""
@@ -210,7 +221,7 @@ class SnakeGameGym(SnakeGame):
 
 		self.snake = Snake(self.rows,self.cols)
 		self.generate_fruit()
-		self.generate_bomb()
+		self.generate_bombs(self.num_bombs)
 		self.restart = True
 		if self.score > self.high_score:
 			self.high_score = self.score
