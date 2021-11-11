@@ -92,12 +92,24 @@ def analyzeRL(
     scores,  # array of scores for each completed game
 ):
     s_arr = np.array(scores)
+
+    analysis = {
+        "completed_games": len(s_arr),
+        "high_score": -1,
+        "mean_score": -1,
+        "median_score": -1,
+    }
     print("Number of completed games: ", len(s_arr))
 
     if len(s_arr) > 0:
-        print("High Score over all games: ", np.max(s_arr))
-        print("Mean Score over all games: ", np.average(s_arr))
-        print("Median Score over all games: ", np.median(s_arr))    
+        analysis["high_score"]= np.max(s_arr)
+        analysis["mean_score"]= np.average(s_arr)
+        analysis["median_score"]= np.median(s_arr)
+        print("High Score over all games: ", analysis["high_score"])
+        print("Mean Score over all games: ", analysis["mean_score"])
+        print("Median Score over all games: ", analysis["median_score"])
+
+    return analysis
 
 
 # %% [markdown]
