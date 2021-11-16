@@ -5,29 +5,35 @@ from typing import Callable
 from gym import spaces
 from numpy import ndarray
 from gym_snake.envs.snakeGameGym import *
-from gym_snake.envs.snakeRewardFuncs import basic_reward_func
+from gym_snake.envs.snakeRewardFuncs import *
 
 
 class SnakeEnv(gym.Env):
     metadata = {'render.modes': ['human']}
 
     def __init__(self, 
-        use_pygame: bool = True, 
+        board_height: int = 10, 
+		board_width:int = 10, 
+		use_pygame: bool = True, 
+		fps: int = 3000,
         reward_func: Callable[..., float] = basic_reward_func):
         """
-        Function that initializes the snake environment.
+        Initializes the custom Snake gym environment.
 
-        use_pygame: a boolean flage representing whether or not to render the game with pygame
+		board_height: the number of rows on the game board. defaults to 10.
+		board_width: the number of columns on the game board. defaults to 10.
+		use_pygame: boolean flag for whether or not to visualize the environment with pygame. defaults to True.
+		fps: sets the speed of the game in frames per second.
         reward_func: a function that takes any inputs (representing important game states) and returns an 
                      int output representing a reward for the snake agent based on the inputs. 
                      Defaults to snakeRewardFunc.basic_reward_func()
         """
-        fps = 3000
         self.viewer = None
 
         if use_pygame:
             pygame.font.init()
-        self.game = SnakeGameGym(fps, use_pygame=use_pygame)
+            self.fps = fps
+        self.game = SnakeGameGym(board_height, board_width, use_pygame)
 
         self.reward_func = reward_func
         self.action_space = spaces.Discrete(4)
@@ -44,7 +50,7 @@ class SnakeEnv(gym.Env):
         # Check to make sure action is valid
         err_msg = "%r (%s) invalid" % (action, type(action))
         assert self.action_space.contains(action), err_msg
-
+        
         # Play one frame of Snake Game
         self.game.move_snake(action)
 
@@ -52,6 +58,7 @@ class SnakeEnv(gym.Env):
         did_consume_fruit = self.game.check_fruit_collision()
         did_collide_wall = self.game.check_wall_collision()
         did_collide_body = self.game.check_body_collision()
+        did_move_closer_to_fruit = self.game.check_closer_to_fruit()
 
         # Get observation after move
         observation = self.game.get_board()
@@ -61,6 +68,7 @@ class SnakeEnv(gym.Env):
             "did_consume_fruit":did_consume_fruit,
             "did_collide_wall": did_collide_wall,
             "did_collide_body": did_collide_body,
+            "did_move_closer_to_fruit": did_move_closer_to_fruit
         }
         rewards = self.reward_func(reward_dict)
 
@@ -75,7 +83,7 @@ class SnakeEnv(gym.Env):
             self.game.respond_to_fruit_consumption()
         
         if self.game.use_pygame:
-            self.game.clock.tick(self.game.fps)
+            self.game.clock.tick(self.fps)
             self.game.redraw_window()
 
         return observation, rewards, done, info

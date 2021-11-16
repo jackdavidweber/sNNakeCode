@@ -19,10 +19,18 @@ class SnakeGameGym(SnakeGame):
 	Inherits the SankeGame class that runs the Snake Game.
 	"""
 
-	def __init__(self, fps: int, use_pygame: bool = True):
+	def __init__(self,
+		board_height: int, 
+		board_width:int, 
+		use_pygame: bool):
 		"""
-		Initializes the SnakeGameGATest class.
+		Initializes the SnakeGameGym class.
+
+		board_height: the number of rows on the game board.
+		board_width: the number of columns on the game board.
+		use_pygame: boolean flag for whether or not to visualize the environment with pygame.
 		"""
+		# SnakeGameGym specific instance variables
 		self.use_pygame = use_pygame
 		self.move_map = {
 			0: "left",
@@ -31,31 +39,39 @@ class SnakeGameGym(SnakeGame):
 			3: "down",
 		}
 		
+		# original Snake instance variables
 		self.width = 500
 		self.height = 600
 		self.grid_start_y = 100
 		self.play = True
 		self.restart = False
-		self.fps = fps  # FIXME: remove fps since it doesn't seem to be doing anything
-		self.rows = 10
-		self.cols = self.rows
-		self.snake = SnakeGym(self.rows,self.cols, self.get_rand_pos())
+		self.rows = board_height
+		self.cols = board_width
+		self.snake = SnakeGym(self.rows, self.cols, self.get_rand_pos())
 		self.fruit_pos = (0,0)
 		self.generate_fruit()
 		self.score = 0
 		self.high_score = 0
+		self.last_head_pos = self.snake.body[0]
 
+		# initializing pygame visualization
 		if self.use_pygame:
 			self.win = pygame.display.set_mode((self.width, self.height))
 			self.clock = pygame.time.Clock()
 
 	def get_rand_pos(self):
+		"""
+		Function that returns a random position on the board.
+		"""
 		rand_row = random.randrange(0, self.rows)
 		rand_col = random.randrange(0, self.cols)
 
 		return (rand_row, rand_col)
 
 	def pos_on_board(self, pos):
+		"""
+		Function that checks if a given position is on the board.
+		"""
 		# If row index is less than 0 or greater than number of rows, pos is not on board
 		if pos[0] < 0 or pos[0] >= self.rows:
 			return False
@@ -108,6 +124,8 @@ class SnakeGameGym(SnakeGame):
 		Function that moves the snake on the board in one of four possible directions
 		using a discrete 4-item action space as input.
 		"""
+		self.last_head_pos = self.snake.body[0]
+
 		direct = self.move_map[action]
 
 		self.snake.directions.appendleft(direct)
@@ -169,6 +187,22 @@ class SnakeGameGym(SnakeGame):
 				return True
 
 		return False
+
+	def check_closer_to_fruit(self) -> bool:
+		"""
+		Function that checks if the snake has moved closer to the fruit.
+		"""
+		head = self.snake.body[0]
+		return self.manhattan_distance(self.fruit_pos,self.last_head_pos) > self.manhattan_distance(self.fruit_pos, head)
+
+	def manhattan_distance(self, pos1, pos2) -> bool:
+		"""
+		Function that returns simple city-block distance
+		"""
+		row_diff = abs(pos1[0] - pos2[0])
+		col_diff = abs(pos1[1] - pos2[1])
+
+		return row_diff + col_diff
 
 	def game_over(self):
 		"""Function that restarts the game upon game over."""
