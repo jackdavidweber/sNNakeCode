@@ -47,7 +47,7 @@ def main():
 
     # Distance Reward Structure
     strategy_label = "Reward Closer to Fruit"
-    strategy_description = "Very similar to the basic reward structure, but we reward when the snake moves a step closer to the fruit"  # TODO
+    strategy_description = "Very similar to the basic reward structure, but we reward when the snake moves a step closer to the fruit"
     model = trainRL(train_timesteps=TRAIN_TIMESTEPS, 
                     board_height=BOARD_HEIGHT, 
                     board_width=BOARD_WIDTH, 
@@ -60,6 +60,23 @@ def main():
                     visualize_testing=VISUALIZE_TESTING, 
                     visualization_fps=VIS_FPS, 
                     reward_function=RewardFuncs.reward_closer_to_fruit)
+    analyze_and_write_to_csv(strategy_label, strategy_description, scores)
+
+    # Move Ceiling Structure
+    strategy_label = "Punish after N moves"
+    strategy_description = "In this structure we punish the snake for idle time with no fruit consumption"
+    model = trainRL(train_timesteps=TRAIN_TIMESTEPS, 
+                    board_height=BOARD_HEIGHT, 
+                    board_width=BOARD_WIDTH, 
+                    visualization_fps=VIS_FPS, 
+                    reward_function=RewardFuncs.basic_reward_func_with_move_ceiling)
+    scores = testRL(model=model, 
+                    test_timesteps=TEST_TIMESTEPS, 
+                    board_height=BOARD_HEIGHT, 
+                    board_width=BOARD_WIDTH, 
+                    visualize_testing=VISUALIZE_TESTING, 
+                    visualization_fps=VIS_FPS, 
+                    reward_function=RewardFuncs.basic_reward_func_with_move_ceiling)
     analyze_and_write_to_csv(strategy_label, strategy_description, scores)
 
 if __name__ == "__main__":
