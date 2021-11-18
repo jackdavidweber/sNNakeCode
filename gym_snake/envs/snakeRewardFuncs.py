@@ -16,11 +16,11 @@ def basic_reward_func(reward_dict) -> float:
         an integer representing a reward assigned to the snake agent based on the inputs provided
     """
     if reward_dict["did_consume_fruit"]:
-        return 1
+        return 1.0
     elif reward_dict["did_collide_wall"] or reward_dict["did_collide_body"]:
-        return -1
+        return -1.0
     else: 
-        return 0
+        return 0.0
 
 def reward_2x_for_fruit(reward_dict) -> float:
     """
@@ -35,11 +35,11 @@ def reward_2x_for_fruit(reward_dict) -> float:
         an integer representing a reward assigned to the snake agent based on the inputs provided
     """
     if reward_dict["did_consume_fruit"]:
-        return 2
+        return 2.0
     elif reward_dict["did_collide_wall"] or reward_dict["did_collide_body"]:
-        return -1
+        return -1.0
     else: 
-        return 0
+        return 0.0
 
 def reward_10x_for_fruit(reward_dict) -> float:
     """
@@ -54,11 +54,11 @@ def reward_10x_for_fruit(reward_dict) -> float:
         an integer representing a reward assigned to the snake agent based on the inputs provided
     """
     if reward_dict["did_consume_fruit"]:
-        return 10
+        return 10.0
     elif reward_dict["did_collide_wall"] or reward_dict["did_collide_body"]:
-        return -1
+        return -1.0
     else: 
-        return 0
+        return 0.0
 
 def punish_equally_for_inactivity(reward_dict) -> float:
     """
@@ -73,11 +73,11 @@ def punish_equally_for_inactivity(reward_dict) -> float:
         an integer representing a reward assigned to the snake agent based on the inputs provided
     """
     if reward_dict["did_consume_fruit"]:
-        return 1
+        return 1.0
     elif reward_dict["did_collide_wall"] or reward_dict["did_collide_body"]:
-        return -1
+        return -1.0
     else: 
-        return -1
+        return -1.0
 
 def punish_half_for_inactivity(reward_dict) -> float:
     """
@@ -93,9 +93,9 @@ def punish_half_for_inactivity(reward_dict) -> float:
         an integer representing a reward assigned to the snake agent based on the inputs provided
     """
     if reward_dict["did_consume_fruit"]:
-        return 1
+        return 1.0
     elif reward_dict["did_collide_wall"] or reward_dict["did_collide_body"]:
-        return -1
+        return -1.0
     else: 
         return -0.5
 
@@ -113,9 +113,9 @@ def punish_tenth_for_inactivity(reward_dict) -> float:
         an integer representing a reward assigned to the snake agent based on the inputs provided
     """
     if reward_dict["did_consume_fruit"]:
-        return 1
+        return 1.0
     elif reward_dict["did_collide_wall"] or reward_dict["did_collide_body"]:
-        return -1
+        return -1.0
     else: 
         return -0.1
 
@@ -213,13 +213,13 @@ def reward_closer_to_fruit(reward_dict) -> float:
         an integer representing a reward assigned to the snake agent based on the inputs provided
     """
     if reward_dict["did_consume_fruit"]:
-        return 1
+        return 1.0
     elif reward_dict["did_move_closer_to_fruit"]:
-        return 1
+        return 1.0
     elif reward_dict["did_collide_wall"] or reward_dict["did_collide_body"]:
-        return -1
+        return -1.0
     else: 
-        return 0
+        return 0.0
 
 def reward_2x_closer_to_fruit(reward_dict) -> float:
     """
@@ -238,13 +238,13 @@ def reward_2x_closer_to_fruit(reward_dict) -> float:
         an integer representing a reward assigned to the snake agent based on the inputs provided
     """
     if reward_dict["did_consume_fruit"]:
-        return 1
+        return 1.0
     elif reward_dict["did_move_closer_to_fruit"]:
-        return 2
+        return 2.0
     elif reward_dict["did_collide_wall"] or reward_dict["did_collide_body"]:
-        return -1
+        return -1.0
     else: 
-        return 0
+        return 0.0
 
 def reward_10x_closer_to_fruit(reward_dict) -> float:
     """
@@ -263,10 +263,10 @@ def reward_10x_closer_to_fruit(reward_dict) -> float:
         an integer representing a reward assigned to the snake agent based on the inputs provided
     """
     if reward_dict["did_consume_fruit"]:
-        return 1
+        return 1.0
     elif reward_dict["did_move_closer_to_fruit"]:
-        return 10
+        return 10.0
     elif reward_dict["did_collide_wall"] or reward_dict["did_collide_body"]:
-        return -1
+        return -1.0
     else: 
-        return 0
+        return 0.0
