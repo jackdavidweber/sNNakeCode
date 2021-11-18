@@ -2,10 +2,10 @@ import csv
 from datetime import datetime
 from trainTestReinforcementAlgorithm import *
 import gym_snake.envs.snakeRewardFuncs as RewardFuncs
-from stable_baselines3 import DQN, A2C, PPO
+from stable_baselines3 import A2C, DDPG, DQN, PPO, SAC, TD3
 
-TRAIN_TIMESTEPS = 1000000
-TEST_TIMESTEPS = 100000
+TRAIN_TIMESTEPS = 1000
+TEST_TIMESTEPS = 1000
 BOARD_HEIGHT = 10
 BOARD_WIDTH = 10
 VISUALIZE_TESTING = False
@@ -40,6 +40,24 @@ def run_experiments(model_type, model_generator):
                     visualize_testing=VISUALIZE_TESTING, 
                     visualization_fps=VIS_FPS, 
                     reward_function=RewardFuncs.basic_reward_func)
+    analyze_and_write_to_csv(strategy_label, strategy_description, scores)
+
+    # Reward More for Fruit
+    strategy_label = "("+model_type+"): "+"Reward more for Fruit"
+    strategy_description = "Here we just do the basic reward structure except we give a much higher reward for fruit consumption than the negative reward."
+    model = trainRL(model_generator=model_generator,
+                    train_timesteps=TRAIN_TIMESTEPS, 
+                    board_height=BOARD_HEIGHT, 
+                    board_width=BOARD_WIDTH, 
+                    visualization_fps=VIS_FPS, 
+                    reward_function=RewardFuncs.reward_more_for_fruit)
+    scores = testRL(model=model, 
+                    test_timesteps=TEST_TIMESTEPS, 
+                    board_height=BOARD_HEIGHT, 
+                    board_width=BOARD_WIDTH, 
+                    visualize_testing=VISUALIZE_TESTING, 
+                    visualization_fps=VIS_FPS, 
+                    reward_function=RewardFuncs.reward_more_for_fruit)
     analyze_and_write_to_csv(strategy_label, strategy_description, scores)
 
     # Distance Reward Structure
@@ -192,8 +210,7 @@ def run_experiments(model_type, model_generator):
                     visualize_testing=VISUALIZE_TESTING, 
                     visualization_fps=VIS_FPS, 
                     reward_function=RewardFuncs.punish_tenth_for_inactivity)
-    analyze_and_write_to_csv(strategy_label, strategy_description, scores)          
-
+    analyze_and_write_to_csv(strategy_label, strategy_description, scores)
 
 
 def main():
@@ -204,8 +221,11 @@ def main():
 
     model_types = {
         "A2C": lambda env: A2C("MlpPolicy", env, verbose=0),
+        # "DDPG": lambda env: DDPG("MlpPolicy", env, verbose=0),
         "DQN": lambda env: DQN("MlpPolicy", env, verbose=0),
         "PPO": lambda env: PPO("MlpPolicy", env, verbose=0),
+        # "SAC": lambda env: SAC("MlpPolicy", env, verbose=0),
+        # "TD3": lambda env: TD3("MlpPolicy", env, verbose=0),
     }
 
     for model_type in model_types.keys():
