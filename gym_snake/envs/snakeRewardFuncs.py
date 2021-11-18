@@ -22,6 +22,65 @@ def basic_reward_func(reward_dict) -> float:
     else: 
         return 0
 
+def punish_equally_for_inactivity(reward_dict) -> float:
+    """
+    Similar to basic reward function except punishes -1 for not doing anything.
+
+    reward_dict:
+        did_consume_fruit: boolean representing whether a snake consumed a fruit in the last move
+        did_collide_wall: boolean representing whether a snake collided with itself in the last move
+        did_collide_body: boolean representing whether a snake collided with a wall in the last move
+
+    output: 
+        an integer representing a reward assigned to the snake agent based on the inputs provided
+    """
+    if reward_dict["did_consume_fruit"]:
+        return 1
+    elif reward_dict["did_collide_wall"] or reward_dict["did_collide_body"]:
+        return -1
+    else: 
+        return -1
+
+def punish_half_for_inactivity(reward_dict) -> float:
+    """
+    Similar to basic reward function except punishes -0.5 for not doing anything.
+
+
+    reward_dict:
+        did_consume_fruit: boolean representing whether a snake consumed a fruit in the last move
+        did_collide_wall: boolean representing whether a snake collided with itself in the last move
+        did_collide_body: boolean representing whether a snake collided with a wall in the last move
+
+    output: 
+        an integer representing a reward assigned to the snake agent based on the inputs provided
+    """
+    if reward_dict["did_consume_fruit"]:
+        return 1
+    elif reward_dict["did_collide_wall"] or reward_dict["did_collide_body"]:
+        return -1
+    else: 
+        return -0.5
+
+def punish_tenth_for_inactivity(reward_dict) -> float:
+    """
+    Similar to basic reward function except punishes -0.1 for not doing anything.
+
+
+    reward_dict:
+        did_consume_fruit: boolean representing whether a snake consumed a fruit in the last move
+        did_collide_wall: boolean representing whether a snake collided with itself in the last move
+        did_collide_body: boolean representing whether a snake collided with a wall in the last move
+
+    output: 
+        an integer representing a reward assigned to the snake agent based on the inputs provided
+    """
+    if reward_dict["did_consume_fruit"]:
+        return 1
+    elif reward_dict["did_collide_wall"] or reward_dict["did_collide_body"]:
+        return -1
+    else: 
+        return -0.1
+
 def basic_reward_func_with_move_ceiling(reward_dict) -> float:
     """
     Basic reward function that rewards the snake for consuming a fruit, 

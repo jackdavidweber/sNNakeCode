@@ -140,6 +140,60 @@ def run_experiments(model_type, model_generator):
                     reward_function=RewardFuncs.basic_reward_func_with_move_ceiling)
     analyze_and_write_to_csv(strategy_label, strategy_description, scores)
 
+    # Punish Equally for Inactivity
+    strategy_label = "("+model_type+"): "+"Punish equally for inactivity"
+    strategy_description = "Here we just do the basic reward structure of + for fruit and - for wall/self. Same negative reward is applied when snake does nothing (no fruit or collision)."
+    model = trainRL(model_generator=model_generator,
+                    train_timesteps=TRAIN_TIMESTEPS, 
+                    board_height=BOARD_HEIGHT, 
+                    board_width=BOARD_WIDTH, 
+                    visualization_fps=VIS_FPS, 
+                    reward_function=RewardFuncs.punish_equally_for_inactivity)
+    scores = testRL(model=model, 
+                    test_timesteps=TEST_TIMESTEPS, 
+                    board_height=BOARD_HEIGHT, 
+                    board_width=BOARD_WIDTH, 
+                    visualize_testing=VISUALIZE_TESTING, 
+                    visualization_fps=VIS_FPS, 
+                    reward_function=RewardFuncs.punish_equally_for_inactivity)
+    analyze_and_write_to_csv(strategy_label, strategy_description, scores)
+
+    # Punish Half for Inactivity
+    strategy_label = "("+model_type+"): "+"Punish Half for inactivity"
+    strategy_description = "Here we just do the basic reward structure of + for fruit and - for wall/self. Half negative reward is applied when snake does nothing (no fruit or collision)."
+    model = trainRL(model_generator=model_generator,
+                    train_timesteps=TRAIN_TIMESTEPS, 
+                    board_height=BOARD_HEIGHT, 
+                    board_width=BOARD_WIDTH, 
+                    visualization_fps=VIS_FPS, 
+                    reward_function=RewardFuncs.punish_half_for_inactivity)
+    scores = testRL(model=model, 
+                    test_timesteps=TEST_TIMESTEPS, 
+                    board_height=BOARD_HEIGHT, 
+                    board_width=BOARD_WIDTH, 
+                    visualize_testing=VISUALIZE_TESTING, 
+                    visualization_fps=VIS_FPS, 
+                    reward_function=RewardFuncs.punish_half_for_inactivity)
+    analyze_and_write_to_csv(strategy_label, strategy_description, scores)
+
+    # Punish Tenth for Inactivity
+    strategy_label = "("+model_type+"): "+"Punish Tenth for inactivity"
+    strategy_description = "Here we just do the basic reward structure of + for fruit and - for wall/self. Tenth negative reward is applied when snake does nothing (no fruit or collision)."
+    model = trainRL(model_generator=model_generator,
+                    train_timesteps=TRAIN_TIMESTEPS, 
+                    board_height=BOARD_HEIGHT, 
+                    board_width=BOARD_WIDTH, 
+                    visualization_fps=VIS_FPS, 
+                    reward_function=RewardFuncs.punish_tenth_for_inactivity)
+    scores = testRL(model=model, 
+                    test_timesteps=TEST_TIMESTEPS, 
+                    board_height=BOARD_HEIGHT, 
+                    board_width=BOARD_WIDTH, 
+                    visualize_testing=VISUALIZE_TESTING, 
+                    visualization_fps=VIS_FPS, 
+                    reward_function=RewardFuncs.punish_tenth_for_inactivity)
+    analyze_and_write_to_csv(strategy_label, strategy_description, scores)          
+
 
 
 def main():
