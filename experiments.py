@@ -60,19 +60,81 @@ def run_experiments(model_type, model_generator):
                     reward_function=RewardFuncs.reward_closer_to_fruit)
     analyze_and_write_to_csv(strategy_label, strategy_description, scores)
 
-    # Move Ceiling Structure
-    strategy_label = "("+model_type+"): "+"Punish after N moves"
+    # Kill after 10 idle moves
+    strategy_label = "("+model_type+"): "+"Kill after 10 idle moves"
+    strategy_description = "Here we just do the basic reward structure of + for fruit and - for wall. We kill the snake after a set number of idle moves."
+    model = trainRL(model_generator=model_generator,
+                    train_timesteps=TRAIN_TIMESTEPS, 
+                    board_height=BOARD_HEIGHT, 
+                    board_width=BOARD_WIDTH,
+                    max_moves_no_fruit=10,
+                    visualization_fps=VIS_FPS, 
+                    reward_function=RewardFuncs.basic_reward_func)
+    scores = testRL(model=model, 
+                    test_timesteps=TEST_TIMESTEPS, 
+                    board_height=BOARD_HEIGHT, 
+                    board_width=BOARD_WIDTH, 
+                    max_moves_no_fruit=10,
+                    visualize_testing=VISUALIZE_TESTING, 
+                    visualization_fps=VIS_FPS, 
+                    reward_function=RewardFuncs.basic_reward_func)
+    analyze_and_write_to_csv(strategy_label, strategy_description, scores)
+
+    # Kill after 30 idle moves
+    strategy_label = "("+model_type+"): "+"Kill after 30 idle moves"
+    strategy_description = "Here we just do the basic reward structure of + for fruit and - for wall. We kill the snake after a set number of idle moves."
+    model = trainRL(model_generator=model_generator,
+                    train_timesteps=TRAIN_TIMESTEPS, 
+                    board_height=BOARD_HEIGHT, 
+                    board_width=BOARD_WIDTH,
+                    max_moves_no_fruit=30,
+                    visualization_fps=VIS_FPS, 
+                    reward_function=RewardFuncs.basic_reward_func)
+    scores = testRL(model=model, 
+                    test_timesteps=TEST_TIMESTEPS, 
+                    board_height=BOARD_HEIGHT, 
+                    board_width=BOARD_WIDTH, 
+                    max_moves_no_fruit=30,
+                    visualize_testing=VISUALIZE_TESTING, 
+                    visualization_fps=VIS_FPS, 
+                    reward_function=RewardFuncs.basic_reward_func)
+    analyze_and_write_to_csv(strategy_label, strategy_description, scores)
+
+    # Kill and Punish after 10 idle moves
+    strategy_label = "("+model_type+"): "+"Punish after 10 idle moves"
     strategy_description = "In this structure we punish the snake for idle time with no fruit consumption"
     model = trainRL(model_generator=model_generator,
                     train_timesteps=TRAIN_TIMESTEPS, 
                     board_height=BOARD_HEIGHT, 
-                    board_width=BOARD_WIDTH, 
+                    board_width=BOARD_WIDTH,
+                    max_moves_no_fruit=10,
                     visualization_fps=VIS_FPS, 
                     reward_function=RewardFuncs.basic_reward_func_with_move_ceiling)
     scores = testRL(model=model, 
                     test_timesteps=TEST_TIMESTEPS, 
                     board_height=BOARD_HEIGHT, 
-                    board_width=BOARD_WIDTH, 
+                    board_width=BOARD_WIDTH,
+                    max_moves_no_fruit=10,
+                    visualize_testing=VISUALIZE_TESTING, 
+                    visualization_fps=VIS_FPS, 
+                    reward_function=RewardFuncs.basic_reward_func_with_move_ceiling)
+    analyze_and_write_to_csv(strategy_label, strategy_description, scores)
+
+    # Kill and Punish after 30 idle moves
+    strategy_label = "("+model_type+"): "+"Punish after 30 idle moves"
+    strategy_description = "In this structure we punish the snake for idle time with no fruit consumption"
+    model = trainRL(model_generator=model_generator,
+                    train_timesteps=TRAIN_TIMESTEPS, 
+                    board_height=BOARD_HEIGHT, 
+                    board_width=BOARD_WIDTH,
+                    max_moves_no_fruit=30,
+                    visualization_fps=VIS_FPS, 
+                    reward_function=RewardFuncs.basic_reward_func_with_move_ceiling)
+    scores = testRL(model=model, 
+                    test_timesteps=TEST_TIMESTEPS, 
+                    board_height=BOARD_HEIGHT, 
+                    board_width=BOARD_WIDTH,
+                    max_moves_no_fruit=30,
                     visualize_testing=VISUALIZE_TESTING, 
                     visualization_fps=VIS_FPS, 
                     reward_function=RewardFuncs.basic_reward_func_with_move_ceiling)
