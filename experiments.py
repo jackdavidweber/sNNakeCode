@@ -2,6 +2,7 @@ import csv
 from datetime import datetime
 from trainTestReinforcementAlgorithm import *
 import gym_snake.envs.snakeRewardFuncs as RewardFuncs
+from stable_baselines3 import DQN, A2C, PPO
 
 TRAIN_TIMESTEPS = 1000000
 TEST_TIMESTEPS = 100000
@@ -22,16 +23,12 @@ def analyze_and_write_to_csv(strategy_label, strategy_description, scores):
     print(strategy_label + "\n******\n\n")
 
 
-def main():
-    csv_file = open(CSV_FILENAME, "w")
-    csv_writer = csv.writer(csv_file)
-    csv_writer.writerow(["Date/Time","Strategy Label", "Strategy Description","Games Completed", "High Score","Mean Score", "Median Score",])
-    csv_file.close()
-
+def run_experiments(model_type, model_generator):
     # Basic Rewards Structure
-    strategy_label = "Basic Rewards Structure"
+    strategy_label = "("+model_type+"): "+"Basic Rewards Structure"
     strategy_description = "Here we just do the basic reward structure of + for fruit and - for wall. We do not kill the snake after a set number of moves."
-    model = trainRL(train_timesteps=TRAIN_TIMESTEPS, 
+    model = trainRL(model_generator=model_generator,
+                    train_timesteps=TRAIN_TIMESTEPS, 
                     board_height=BOARD_HEIGHT, 
                     board_width=BOARD_WIDTH, 
                     visualization_fps=VIS_FPS, 
@@ -46,9 +43,10 @@ def main():
     analyze_and_write_to_csv(strategy_label, strategy_description, scores)
 
     # Distance Reward Structure
-    strategy_label = "Reward Closer to Fruit"
+    strategy_label = "("+model_type+"): "+"Reward Closer to Fruit"
     strategy_description = "Very similar to the basic reward structure, but we reward when the snake moves a step closer to the fruit"
-    model = trainRL(train_timesteps=TRAIN_TIMESTEPS, 
+    model = trainRL(model_generator=model_generator,
+                    train_timesteps=TRAIN_TIMESTEPS, 
                     board_height=BOARD_HEIGHT, 
                     board_width=BOARD_WIDTH, 
                     visualization_fps=VIS_FPS, 
@@ -63,9 +61,10 @@ def main():
     analyze_and_write_to_csv(strategy_label, strategy_description, scores)
 
     # Move Ceiling Structure
-    strategy_label = "Punish after N moves"
+    strategy_label = "("+model_type+"): "+"Punish after N moves"
     strategy_description = "In this structure we punish the snake for idle time with no fruit consumption"
-    model = trainRL(train_timesteps=TRAIN_TIMESTEPS, 
+    model = trainRL(model_generator=model_generator,
+                    train_timesteps=TRAIN_TIMESTEPS, 
                     board_height=BOARD_HEIGHT, 
                     board_width=BOARD_WIDTH, 
                     visualization_fps=VIS_FPS, 
@@ -78,6 +77,24 @@ def main():
                     visualization_fps=VIS_FPS, 
                     reward_function=RewardFuncs.basic_reward_func_with_move_ceiling)
     analyze_and_write_to_csv(strategy_label, strategy_description, scores)
+
+
+
+def main():
+    csv_file = open(CSV_FILENAME, "w")
+    csv_writer = csv.writer(csv_file)
+    csv_writer.writerow(["Date/Time","Strategy Label", "Strategy Description","Games Completed", "High Score","Mean Score", "Median Score",])
+    csv_file.close()
+
+    model_types = {
+        "A2C": lambda env: A2C("MlpPolicy", env, verbose=0),
+        "DQN": lambda env: DQN("MlpPolicy", env, verbose=0),
+        "PPO": lambda env: PPO("MlpPolicy", env, verbose=0),
+    }
+
+    for model_type in model_types.keys():
+        run_experiments(model_type, model_types[model_type])
+
 
 if __name__ == "__main__":
     main()
