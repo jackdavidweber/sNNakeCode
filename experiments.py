@@ -2,10 +2,10 @@ import csv
 from datetime import datetime
 from trainTestReinforcementAlgorithm import *
 import gym_snake.envs.snakeRewardFuncs as RewardFuncs
-from stable_baselines3 import A2C, DDPG, DQN, PPO, SAC, TD3
+from stable_baselines3 import A2C, DQN, PPO
 
-TRAIN_TIMESTEPS = 1000
-TEST_TIMESTEPS = 1000
+TRAIN_TIMESTEPS = 1000000
+TEST_TIMESTEPS = 100000
 BOARD_HEIGHT = 10
 BOARD_WIDTH = 10
 VISUALIZE_TESTING = False
@@ -221,11 +221,8 @@ def main():
 
     model_types = {
         "A2C": lambda env: A2C("MlpPolicy", env, verbose=0),
-        # "DDPG": lambda env: DDPG("MlpPolicy", env, verbose=0),
         "DQN": lambda env: DQN("MlpPolicy", env, verbose=0),
         "PPO": lambda env: PPO("MlpPolicy", env, verbose=0),
-        # "SAC": lambda env: SAC("MlpPolicy", env, verbose=0),
-        # "TD3": lambda env: TD3("MlpPolicy", env, verbose=0),
     }
 
     for model_type in model_types.keys():
