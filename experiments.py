@@ -24,6 +24,7 @@ def analyze_and_write_to_csv(strategy_label, strategy_description, scores):
 
 
 def run_experiments(model_type, model_generator):
+    """
     # Basic Rewards Structure
     strategy_label = "("+model_type+"): "+"Basic Rewards Structure"
     strategy_description = "Here we just do the basic reward structure of + for fruit and - for wall. We do not kill the snake after a set number of moves."
@@ -131,6 +132,7 @@ def run_experiments(model_type, model_generator):
                     visualization_fps=VIS_FPS, 
                     reward_function=RewardFuncs.reward_10x_closer_to_fruit)
     analyze_and_write_to_csv(strategy_label, strategy_description, scores)
+    """
 
     # Kill after 10 idle moves
     strategy_label = "("+model_type+"): "+"Kill after 10 idle moves"
@@ -354,9 +356,9 @@ def main():
     csv_file.close()
 
     model_types = {
-        "A2C": lambda env: A2C("MlpPolicy", env, verbose=0),
+        # "A2C": lambda env: A2C("MlpPolicy", env, verbose=0),
         "DQN": lambda env: DQN("MlpPolicy", env, verbose=0),
-        "PPO": lambda env: PPO("MlpPolicy", env, verbose=0),
+        # "PPO": lambda env: PPO("MlpPolicy", env, verbose=0),
     }
 
     for model_type in model_types.keys():
