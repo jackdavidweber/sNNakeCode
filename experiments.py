@@ -295,6 +295,7 @@ def run_experiments(model_type, model_generator):
                     reward_function=RewardFuncs.punish_tenth_for_move_ceiling)
     analyze_and_write_to_csv(strategy_label, strategy_description, scores)
 
+    """
     # Punish Equally for Inactivity
     strategy_label = "("+model_type+"): "+"Punish equally for inactivity"
     strategy_description = "Here we just do the basic reward structure of + for fruit and - for wall/self. Same negative reward is applied when snake does nothing (no fruit or collision)."
@@ -330,6 +331,7 @@ def run_experiments(model_type, model_generator):
                     visualization_fps=VIS_FPS, 
                     reward_function=RewardFuncs.punish_half_for_inactivity)
     analyze_and_write_to_csv(strategy_label, strategy_description, scores)
+    """
 
     # Punish Tenth for Inactivity
     strategy_label = "("+model_type+"): "+"Punish Tenth for inactivity"
