@@ -1,11 +1,12 @@
+from argparse import ArgumentParser
 import csv
 from datetime import datetime
 from trainTestReinforcementAlgorithm import *
 import gym_snake.envs.snakeRewardFuncs as RewardFuncs
 from stable_baselines3 import A2C, DQN, PPO
 
-TRAIN_TIMESTEPS = 1000000
-TEST_TIMESTEPS = 10000
+TRAIN_TIMESTEPS = 100
+TEST_TIMESTEPS = 10
 BOARD_HEIGHT = 10
 BOARD_WIDTH = 10
 VISUALIZE_TESTING = False
@@ -18,7 +19,7 @@ def analyze_and_write_to_csv(strategy_label, strategy_description, scores):
     csv_writer = csv.writer(csv_file)
     date_time = datetime.now().strftime("[%Y-%m-%d %H:%M:%S%z (%Z)]")
     analysis = analyzeRL(scores)
-    csv_writer.writerow([date_time, TRAIN_TIMESTEPS, TEST_TIMESTEPS, BOARD_HEIGHT, BOARD_WIDTH, strategy_label, strategy_description, analysis["completed_games"], analysis["high_score"], analysis["mean_score"], analysis["median_score"]])
+    csv_writer.writerow([date_time, strategy_label, strategy_description, analysis["completed_games"], analysis["high_score"], analysis["mean_score"], analysis["median_score"]])
     csv_file.close()
     print(strategy_label + "\n******\n\n")
 
@@ -350,9 +351,18 @@ def run_experiments(model_type, model_generator):
 
 
 def main():
+    aparser = ArgumentParser("Experiments")
+    aparser.add_argument("--commit_hash", type=str, default="NoneProvided")
+    args = aparser.parse_args()
+
+
     csv_file = open(CSV_FILENAME, "w")
     csv_writer = csv.writer(csv_file)
-    csv_writer.writerow(["Date/Time", "Train Timesteps", "Test Timesteps", "Board Height", "Board Width", "Strategy Label", "Strategy Description","Games Completed", "High Score","Mean Score", "Median Score",])
+    csv_writer.writerow(["commit_hash", "Train Timesteps", "Test Timesteps", "Board Height", "Board Width",])
+    csv_writer.writerow([args.commit_hash, TRAIN_TIMESTEPS, TEST_TIMESTEPS, BOARD_HEIGHT, BOARD_WIDTH])
+    csv_writer.writerow([])
+    csv_writer.writerow([])
+    csv_writer.writerow(["Date/Time", "Strategy Label", "Strategy Description","Games Completed", "High Score","Mean Score", "Median Score",])
     csv_file.close()
 
     model_types = {
