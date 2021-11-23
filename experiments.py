@@ -5,8 +5,8 @@ from trainTestReinforcementAlgorithm import *
 import gym_snake.envs.snakeRewardFuncs as RewardFuncs
 from stable_baselines3 import A2C, DQN, PPO
 
-TRAIN_TIMESTEPS = 100
-TEST_TIMESTEPS = 10
+TRAIN_TIMESTEPS = 10000000
+TEST_TIMESTEPS = 100000
 BOARD_HEIGHT = 10
 BOARD_WIDTH = 10
 VISUALIZE_TESTING = False
