@@ -88,7 +88,7 @@ class SnakeGameGym(SnakeGame):
 		# Otherwise, pos is on board
 		return True
 
-	def get_board(self, represent_border=False) -> np.ndarray:
+	def get_board(self, represent_border: bool = False) -> np.ndarray:
 		"""
 		Args:
 			represent_border: bool flag for whether to represent the border in the board.
@@ -102,18 +102,19 @@ class SnakeGameGym(SnakeGame):
 		"""
 		# Initializes empty board
 		board = np.zeros([self.rows, self.cols], dtype=int)
-		border_space = 0
 
 		if represent_border:
 			board = np.zeros([self.rows+2, self.cols+2], dtype=int)
-			border_space = 1  # FIXME: can be replaced with int(represent_border)
-
+			
 			# Create border of -1
 			board[0] = -1
 			board[-1] = -1
 			for r in range(board.shape[0]):
 				board[r][0] = -1
 				board[r][-1] = -1
+
+		# Border space is 1 if represent_border is true. 0 otherwise.
+		border_space = int(represent_border)
 
 		# Add Fruit
 		fruit_row = self.fruit_pos[0] + border_space
