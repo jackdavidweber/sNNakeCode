@@ -5,11 +5,11 @@ from trainTestReinforcementAlgorithm import *
 import gym_snake.envs.snakeRewardFuncs as RewardFuncs
 from stable_baselines3 import A2C, DQN, PPO
 
-TRAIN_TIMESTEPS = 100
-TEST_TIMESTEPS = 10
+TRAIN_TIMESTEPS = 10000000
+TEST_TIMESTEPS = 100000
 BOARD_HEIGHT = 5
 BOARD_WIDTH = 5
-REPRESENT_BORDER = False
+REPRESENT_BORDER = True
 VISUALIZE_TESTING = False
 VIS_FPS = 3000
 CSV_FILENAME = "rl_data.csv"
