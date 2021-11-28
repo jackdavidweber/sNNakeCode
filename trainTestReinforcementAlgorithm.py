@@ -104,7 +104,7 @@ def testRL(
     visualize_testing=True, # Set to true in order to see game moves in pygame. Should be false if run on server.
     visualization_fps=30, # Set frames per second of testing visualization.
     reward_function=RewardFuncs.basic_reward_func, # Set reward function to be used in training. Reward functions are defined in snakeRewardFuncs.py
-    represent_border=False,
+    represent_border=False, # Set a boolean flag for whether or not to represent the border in observation.
 ):
     # Setup
     env = gym.make(
