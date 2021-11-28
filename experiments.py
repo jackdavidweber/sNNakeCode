@@ -9,6 +9,7 @@ TRAIN_TIMESTEPS = 100
 TEST_TIMESTEPS = 10
 BOARD_HEIGHT = 5
 BOARD_WIDTH = 5
+REPRESENT_BORDER = False
 VISUALIZE_TESTING = False
 VIS_FPS = 3000
 CSV_FILENAME = "rl_data.csv"
@@ -20,6 +21,7 @@ def train_and_testRL(
     test_timesteps=TEST_TIMESTEPS,
     board_height=BOARD_HEIGHT,
     board_width=BOARD_WIDTH,
+    represent_border=REPRESENT_BORDER,
     visualize_testing=VISUALIZE_TESTING,
     vis_fps=VIS_FPS,
     ):
@@ -28,14 +30,16 @@ def train_and_testRL(
                     board_height=board_height, 
                     board_width=board_width, 
                     visualization_fps=vis_fps, 
-                    reward_function=reward_function)
+                    reward_function=reward_function,
+                    represent_border=represent_border,)
     scores = testRL(model=model, 
                     test_timesteps=test_timesteps, 
                     board_height=board_height, 
                     board_width=board_width, 
                     visualize_testing=visualize_testing, 
                     visualization_fps=vis_fps, 
-                    reward_function=reward_function)
+                    reward_function=reward_function,
+                    represent_border=represent_border,)
     return scores
 
 def analyze_and_write_to_csv(strategy_label, strategy_description, scores):
@@ -164,8 +168,8 @@ def main():
 
     csv_file = open(CSV_FILENAME, "w")
     csv_writer = csv.writer(csv_file)
-    csv_writer.writerow(["commit_hash", "Train Timesteps", "Test Timesteps", "Board Height", "Board Width",])
-    csv_writer.writerow([args.commit_hash, TRAIN_TIMESTEPS, TEST_TIMESTEPS, BOARD_HEIGHT, BOARD_WIDTH])
+    csv_writer.writerow(["commit_hash", "Train Timesteps", "Test Timesteps", "Board Height", "Board Width", "Represent Border",])
+    csv_writer.writerow([args.commit_hash, TRAIN_TIMESTEPS, TEST_TIMESTEPS, BOARD_HEIGHT, BOARD_WIDTH, REPRESENT_BORDER,])
     csv_writer.writerow([])
     csv_writer.writerow([])
     csv_writer.writerow(["Date/Time", "Strategy Label", "Strategy Description","Games Completed", "High Score","Mean Score", "Median Score",])
