@@ -61,7 +61,7 @@ def trainRL(
         visualize_training (bool): We don't want to visualize the training process.
         visualization_fps (int): Default to a high value for training speed if training is visualized.
         reward_function (fn(reward_dict)->int): Set reward function to be used in training. Reward functions are defined in snakeRewardFuncs.py
-        represent_border (bool):
+        represent_border (bool): boolean flag for whether or not to represent the border in observation.
     Returns:
         A trained stable_baselines3 model
     """
