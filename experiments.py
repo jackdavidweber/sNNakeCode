@@ -13,6 +13,7 @@ REPRESENT_BORDER = True
 VISUALIZE_TESTING = False
 VIS_FPS = 3000
 CSV_FILENAME = "rl_data.csv"
+SAVE_MODEL = True
 
 def train_and_testRL(
     model_generator,
@@ -24,6 +25,7 @@ def train_and_testRL(
     represent_border=REPRESENT_BORDER,
     visualize_testing=VISUALIZE_TESTING,
     vis_fps=VIS_FPS,
+    save_model=SAVE_MODEL
     ):
     model = trainRL(model_generator=model_generator,
                     train_timesteps=train_timesteps, 
@@ -40,6 +42,10 @@ def train_and_testRL(
                     visualization_fps=vis_fps, 
                     reward_function=reward_function,
                     represent_border=represent_border,)
+
+    if save_model:
+        saveRL(model)
+
     return scores
 
 def analyze_and_write_to_csv(strategy_label, strategy_description, scores):
