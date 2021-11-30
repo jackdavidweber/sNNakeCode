@@ -53,44 +53,6 @@ def analyze_and_write_to_csv(strategy_label, strategy_description, scores):
 
 
 def run_experiments(model_type, model_generator):
-    """
-    # Basic Rewards Structure
-    strategy_label = "("+model_type+"): "+"Basic Rewards Structure"
-    strategy_description = "Here we just do the basic reward structure of + for fruit and - for wall. We do not kill the snake after a set number of moves."
-    scores = train_and_testRL(model_generator, RewardFuncs.basic_reward_func)
-    analyze_and_write_to_csv(strategy_label, strategy_description, scores)
-
-    # Basic Rewards Structure with 2x Reward
-    strategy_label = "("+model_type+"): "+"Basic Rewards Structure With 2x Reward"
-    strategy_description = "Here we just do the basic reward structure of + for fruit and - for wall where the reward is twice the punishment. We do not kill the snake after a set number of moves."
-    scores = train_and_testRL(model_generator, RewardFuncs.reward_2x_for_fruit)
-    analyze_and_write_to_csv(strategy_label, strategy_description, scores)
-
-    # Basic Rewards Structure with 10x Reward
-    strategy_label = "("+model_type+"): "+"Basic Rewards Structure With 10x Reward"
-    strategy_description = "Here we just do the basic reward structure of + for fruit and - for wall where the reward is ten times the punishment. We do not kill the snake after a set number of moves."
-    scores = train_and_testRL(model_generator, RewardFuncs.reward_2x_for_fruit)
-    analyze_and_write_to_csv(strategy_label, strategy_description, scores)
-
-    # Distance Reward Structure
-    strategy_label = "("+model_type+"): "+"Reward Closer to Fruit"
-    strategy_description = "Very similar to the basic reward structure, but we reward when the snake moves a step closer to the fruit"
-    scores = train_and_testRL(model_generator, RewardFuncs.reward_closer_to_fruit)
-    analyze_and_write_to_csv(strategy_label, strategy_description, scores)
-
-    # Distance Reward Structure with 2x Reward
-    strategy_label = "("+model_type+"): "+"Reward Closer to Fruit with 2x Reward"
-    strategy_description = "Very similar to the basic reward structure, but we reward twice as much as punish when the snake moves a step closer to the fruit"
-    scores = train_and_testRL(model_generator, RewardFuncs.reward_2x_closer_to_fruit)
-    analyze_and_write_to_csv(strategy_label, strategy_description, scores)
-
-    # Distance Reward Structure with 10x Reward
-    strategy_label = "("+model_type+"): "+"Reward Closer to Fruit with 10x Reward"
-    strategy_description = "Very similar to the basic reward structure, but we reward ten times as much as punish when the snake moves a step closer to the fruit"
-    scores = train_and_test_RL(model_generator, RewardFuncs.reward_10x_closer_to_fruit)
-    analyze_and_write_to_csv(strategy_label, strategy_description, scores)
-    """
-
     # Kill after 10 idle moves
     strategy_label = "("+model_type+"): "+"Kill after 10 idle moves"
     strategy_description = "Here we just do the basic reward structure of + for fruit and - for wall. We kill the snake after a set number of idle moves."
@@ -138,20 +100,6 @@ def run_experiments(model_type, model_generator):
     strategy_description = "In this structure we punish the snake one tenth as much as the reward for idle time with no fruit consumption"
     scores = train_and_testRL(model_generator, RewardFuncs.punish_tenth_for_move_ceiling)
     analyze_and_write_to_csv(strategy_label, strategy_description, scores)
-
-    """
-    # Punish Equally for Inactivity
-    strategy_label = "("+model_type+"): "+"Punish equally for inactivity"
-    strategy_description = "Here we just do the basic reward structure of + for fruit and - for wall/self. Same negative reward is applied when snake does nothing (no fruit or collision)."
-    scores = train_and_testRL(model_generator, RewardFuncs.punish_equally_for_inactivity)
-    analyze_and_write_to_csv(strategy_label, strategy_description, scores)
-
-    # Punish Half for Inactivity
-    strategy_label = "("+model_type+"): "+"Punish Half for inactivity"
-    strategy_description = "Here we just do the basic reward structure of + for fruit and - for wall/self. Half negative reward is applied when snake does nothing (no fruit or collision)."
-    scores = train_and_testRL(model_generator, RewardFuncs.punish_half_for_inactivity)
-    analyze_and_write_to_csv(strategy_label, strategy_description, scores)
-    """
 
     # Punish Tenth for Inactivity
     strategy_label = "("+model_type+"): "+"Punish Tenth for inactivity"
