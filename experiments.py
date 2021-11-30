@@ -25,7 +25,8 @@ def train_and_testRL(
     represent_border=REPRESENT_BORDER,
     visualize_testing=VISUALIZE_TESTING,
     vis_fps=VIS_FPS,
-    save_model=SAVE_MODEL
+    save_model=SAVE_MODEL,
+    model_filename="",
     ):
     model = trainRL(model_generator=model_generator,
                     train_timesteps=train_timesteps, 
@@ -44,7 +45,7 @@ def train_and_testRL(
                     represent_border=represent_border,)
 
     if save_model:
-        saveRL(model)
+        saveRL(model, model_filename)
 
     return scores
 
@@ -62,55 +63,55 @@ def run_experiments(model_type, model_generator):
     # Kill after 10 idle moves
     strategy_label = "("+model_type+"): "+"Kill after 10 idle moves"
     strategy_description = "Here we just do the basic reward structure of + for fruit and - for wall. We kill the snake after a set number of idle moves."
-    scores = train_and_testRL(model_generator, RewardFuncs.basic_reward_func)
+    scores = train_and_testRL(model_generator, RewardFuncs.basic_reward_func, model_filename=strategy_label)
     analyze_and_write_to_csv(strategy_label, strategy_description, scores)
 
     # Kill after 30 idle moves
     strategy_label = "("+model_type+"): "+"Kill after 30 idle moves"
     strategy_description = "Here we just do the basic reward structure of + for fruit and - for wall. We kill the snake after a set number of idle moves."
-    scores = train_and_testRL(model_generator, RewardFuncs.basic_reward_func)
+    scores = train_and_testRL(model_generator, RewardFuncs.basic_reward_func, model_filename=strategy_label)
     analyze_and_write_to_csv(strategy_label, strategy_description, scores)
 
     # Kill and Punish after 10 idle moves
     strategy_label = "("+model_type+"): "+"Punish after 10 idle moves"
     strategy_description = "In this structure we punish the snake for idle time with no fruit consumption"
-    scores = train_and_testRL(model_generator, RewardFuncs.basic_reward_func_with_move_ceiling)
+    scores = train_and_testRL(model_generator, RewardFuncs.basic_reward_func_with_move_ceiling, model_filename=strategy_label)
     analyze_and_write_to_csv(strategy_label, strategy_description, scores)
 
     # Kill and Punish .5x after 10 idle moves
     strategy_label = "("+model_type+"): "+"Punish half as much after 10 idle moves"
     strategy_description = "In this structure we punish the snake half as much as the reward for idle time with no fruit consumption"
-    scores = train_and_testRL(model_generator, RewardFuncs.punish_half_for_move_ceiling)
+    scores = train_and_testRL(model_generator, RewardFuncs.punish_half_for_move_ceiling, model_filename=strategy_label)
     analyze_and_write_to_csv(strategy_label, strategy_description, scores)
 
     # Kill and Punish .1x after 10 idle moves
     strategy_label = "("+model_type+"): "+"Punish one tenth as much after 10 idle moves"
     strategy_description = "In this structure we punish the snake one tenth as much as the reward for idle time with no fruit consumption"
-    scores = train_and_testRL(model_generator, RewardFuncs.punish_tenth_for_move_ceiling)
+    scores = train_and_testRL(model_generator, RewardFuncs.punish_tenth_for_move_ceiling, model_filename=strategy_label)
     analyze_and_write_to_csv(strategy_label, strategy_description, scores)
 
     # Kill and Punish after 30 idle moves
     strategy_label = "("+model_type+"): "+"Punish after 30 idle moves"
     strategy_description = "In this structure we punish the snake for idle time with no fruit consumption"
-    scores = train_and_testRL(model_generator, RewardFuncs.basic_reward_func_with_move_ceiling)
+    scores = train_and_testRL(model_generator, RewardFuncs.basic_reward_func_with_move_ceiling, model_filename=strategy_label)
     analyze_and_write_to_csv(strategy_label, strategy_description, scores)
 
     # Kill and Punish .5x after 30 idle moves
     strategy_label = "("+model_type+"): "+"Punish half as much after 30 idle moves"
     strategy_description = "In this structure we punish the snake half as much as the reward for idle time with no fruit consumption"
-    scores = train_and_testRL(model_generator, RewardFuncs.punish_half_for_move_ceiling)
+    scores = train_and_testRL(model_generator, RewardFuncs.punish_half_for_move_ceiling, model_filename=strategy_label)
     analyze_and_write_to_csv(strategy_label, strategy_description, scores)
 
     # Kill and Punish .1x after 30 idle moves
     strategy_label = "("+model_type+"): "+"Punish one tenth as much after 30 idle moves"
     strategy_description = "In this structure we punish the snake one tenth as much as the reward for idle time with no fruit consumption"
-    scores = train_and_testRL(model_generator, RewardFuncs.punish_tenth_for_move_ceiling)
+    scores = train_and_testRL(model_generator, RewardFuncs.punish_tenth_for_move_ceiling, model_filename=strategy_label)
     analyze_and_write_to_csv(strategy_label, strategy_description, scores)
 
     # Punish Tenth for Inactivity
     strategy_label = "("+model_type+"): "+"Punish Tenth for inactivity"
     strategy_description = "Here we just do the basic reward structure of + for fruit and - for wall/self. Tenth negative reward is applied when snake does nothing (no fruit or collision)."
-    scores = train_and_testRL(model_generator, RewardFuncs.punish_tenth_for_inactivity)
+    scores = train_and_testRL(model_generator, RewardFuncs.punish_tenth_for_inactivity, model_filename=strategy_label)
     analyze_and_write_to_csv(strategy_label, strategy_description, scores)
 
 
