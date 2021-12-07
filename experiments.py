@@ -368,9 +368,9 @@ def main():
     csv_file.close()
 
     model_types = {
-        # "A2C": lambda env: A2C("MlpPolicy", env, verbose=0),
-        "DQN": lambda env: DQN("MlpPolicy", env, verbose=0),
-        # "PPO": lambda env: PPO("MlpPolicy", env, verbose=0),
+        "A2C": lambda env: A2C("MlpPolicy", env, verbose=0),
+        # "DQN": lambda env: DQN("MlpPolicy", env, verbose=0),
+        "PPO": lambda env: PPO("MlpPolicy", env, verbose=0),
     }
 
     for model_type in model_types.keys():
