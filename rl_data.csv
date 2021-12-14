@@ -1,0 +1,14 @@
+commit_hash,Train Timesteps,Test Timesteps,Board Height,Board Width,Represent Border
+03a6b41d938f1109a5ca812dd98b90ca7569767e,10000000,100000,5,5,True
+
+
+Date/Time,Strategy Label,Strategy Description,Games Completed,High Score,Mean Score,Median Score
+[2021-12-07 22:54:59 ()],(A2C): Kill after 10 idle moves,Here we just do the basic reward structure of + for fruit and - for wall. We kill the snake after a set number of idle moves.,3629,13,3.368145494626619,3.0
+[2021-12-08 20:07:19 ()],(A2C): Kill after 30 idle moves,Here we just do the basic reward structure of + for fruit and - for wall. We kill the snake after a set number of idle moves.,1496,15,8.026069518716577,10.0
+[2021-12-09 14:49:37 ()],(A2C): Punish after 10 idle moves,In this structure we punish the snake for idle time with no fruit consumption,3763,13,3.1825671007175127,3.0
+[2021-12-10 07:51:07 ()],(A2C): Punish half as much after 10 idle moves,In this structure we punish the snake half as much as the reward for idle time with no fruit consumption,4858,11,2.2523672293124744,2.0
+[2021-12-10 23:18:19 ()],(A2C): Punish one tenth as much after 10 idle moves,In this structure we punish the snake one tenth as much as the reward for idle time with no fruit consumption,4222,11,2.8455708195168166,2.0
+[2021-12-11 14:15:41 ()],(A2C): Punish after 30 idle moves,In this structure we punish the snake for idle time with no fruit consumption,1313,20,9.543792840822544,12.0
+[2021-12-12 05:15:04 ()],(A2C): Punish half as much after 30 idle moves,In this structure we punish the snake half as much as the reward for idle time with no fruit consumption,1921,15,5.6923477355543985,6.0
+[2021-12-12 20:16:35 ()],(A2C): Punish one tenth as much after 30 idle moves,In this structure we punish the snake one tenth as much as the reward for idle time with no fruit consumption,1247,17,9.597433841218926,13.0
+[2021-12-13 09:33:13 ()],(A2C): Punish Tenth for inactivity,Here we just do the basic reward structure of + for fruit and - for wall/self. Tenth negative reward is applied when snake does nothing (no fruit or collision).,33361,3,0.0837205119750607,0.0

@@ -1,0 +1,6 @@
+commit_hash,Train Timesteps,Test Timesteps,Board Height,Board Width,Represent Border
+NoneProvided,10000000,100000,5,5,True
+
+
+Date/Time,Strategy Label,Strategy Description,Games Completed,High Score,Mean Score,Median Score
+[2021-12-14 02:29:48 ()],(PPO): Kill after 10 idle moves,Here we just do the basic reward structure of + for fruit and - for wall. We kill the snake after a set number of idle moves.,2171,15,6.843850760018425,8.0

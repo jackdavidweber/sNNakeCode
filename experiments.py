@@ -12,7 +12,7 @@ BOARD_WIDTH = 5
 REPRESENT_BORDER = True
 VISUALIZE_TESTING = False
 VIS_FPS = 3000
-CSV_FILENAME = "rl_data.csv"
+CSV_FILENAME = "rl_data_ppo.csv"
 SAVE_MODEL = True
 
 def train_and_testRL(
@@ -134,7 +134,7 @@ def main():
     csv_file.close()
 
     model_types = {
-        "A2C": lambda env: A2C("MlpPolicy", env, verbose=0),
+        # "A2C": lambda env: A2C("MlpPolicy", env, verbose=0),
         # "DQN": lambda env: DQN("MlpPolicy", env, verbose=0),
         "PPO": lambda env: PPO("MlpPolicy", env, verbose=0),
     }
