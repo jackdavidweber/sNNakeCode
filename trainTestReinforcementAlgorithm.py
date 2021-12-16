@@ -18,7 +18,7 @@ import time
 from typing import Callable
 import gym
 import gym_snake
-from stable_baselines3 import A2C
+from stable_baselines3 import A2C, PPO
 import numpy as np
 from argparse import ArgumentParser
 from datetime import datetime
@@ -40,15 +40,15 @@ import gym_snake.envs.snakeRewardFuncs as RewardFuncs
 # %%
 def trainRL(
     model_generator = lambda env: A2C('MlpPolicy', env, verbose=0),
-    train_timesteps=1000,
+    train_timesteps=10000,
     env_name='snake-v0',
-    board_height=10,
-    board_width=10,
-    max_moves_no_fruit=0,
+    board_height=5,
+    board_width=5,
+    max_moves_no_fruit=30,
     visualize_training=False,
-    visualization_fps=3000,
-    reward_function=RewardFuncs.basic_reward_func,
-    represent_border=False,
+    visualization_fps=30,
+    reward_function=RewardFuncs.punish_half_for_move_ceiling,
+    represent_border=True,
 ):
     """
     Args:
@@ -96,15 +96,15 @@ def trainRL(
 # %%
 def testRL(
     model,
-    test_timesteps=100, # Set amount of time for testing. One step is one action for the snake.
+    test_timesteps=300, # Set amount of time for testing. One step is one action for the snake.
     env_name='snake-v0', # Set gym environment name.
-    board_height=10, # Set game board height.
-    board_width=10, # Set game board width.
-    max_moves_no_fruit=0, # Set number of allowed moves without fruit consumption before ending the game. Any non-poitive number corresponds to no limit.
+    board_height=5, # Set game board height.
+    board_width=5, # Set game board width.
+    max_moves_no_fruit=30, # Set number of allowed moves without fruit consumption before ending the game. Any non-poitive number corresponds to no limit.
     visualize_testing=True, # Set to true in order to see game moves in pygame. Should be false if run on server.
     visualization_fps=30, # Set frames per second of testing visualization.
-    reward_function=RewardFuncs.basic_reward_func, # Set reward function to be used in training. Reward functions are defined in snakeRewardFuncs.py
-    represent_border=False, # Set a boolean flag for whether or not to represent the border in observation.
+    reward_function=RewardFuncs.punish_half_for_move_ceiling, # Set reward function to be used in training. Reward functions are defined in snakeRewardFuncs.py
+    represent_border=True, # Set a boolean flag for whether or not to represent the border in observation.
 ):
     # Setup
     env = gym.make(
@@ -180,9 +180,9 @@ def saveRL(
 # To run in the notebook, uncomment the following three lines:
 
 # %%
-# model = trainRL()
-# scores = testRL(model)
-# analyzeRL(scores)
+model = trainRL()
+scores = testRL(model)
+analyzeRL(scores)
 # saveRL(model)
 
 # %% [markdown]
@@ -190,6 +190,7 @@ def saveRL(
 # Note that it is expected that this does not work in the notebook
 
 # %%
+'''
 def main():
     # Get arguments
     aparser = ArgumentParser("Snnake Reinforcement Learning")
@@ -249,8 +250,10 @@ def main():
     # Save
     if args.save_model:
         saveRL(model, args.model_filename)
-
+'''
 
 # %%
+'''
 if __name__ == "__main__":
     main()
+'''
